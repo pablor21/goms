@@ -6,6 +6,6 @@ import "github.com/pablor21/goms/pkg/database/migrator"
 // add your migrations instances here
 func GetMigrations() []migrator.Migration {
 	return []migrator.Migration{
-		&CreateAuthTables{},
+		&InitialMigration{},
 	}
 }

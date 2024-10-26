@@ -4,4 +4,4 @@ api_docs:
 build:
 	go build -o ../bin/goms .
 dev:
-	CGO_ENABLED=false air serve
+	CGO_ENABLED=false air serve 

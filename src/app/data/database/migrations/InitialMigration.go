@@ -7,14 +7,14 @@ import (
 	"github.com/pablor21/goms/app/data/database/migrations/scripts"
 )
 
-type CreateAuthTables struct{}
+type InitialMigration struct{}
 
-func (m *CreateAuthTables) Name() string {
+func (m *InitialMigration) Name() string {
 	return "CreateAuthTables"
 }
 
-func (m *CreateAuthTables) Up(ctx context.Context, db *sql.DB) error {
-	sqlScript, err := scripts.Scripts.ReadFile("20241024_2220_crate_auth_tables.up.sql")
+func (m *InitialMigration) Up(ctx context.Context, db *sql.DB) error {
+	sqlScript, err := scripts.Scripts.ReadFile("initial_migration.up.sql")
 	if err != nil {
 		return err
 	}
@@ -29,8 +29,8 @@ func (m *CreateAuthTables) Up(ctx context.Context, db *sql.DB) error {
 	return err
 }
 
-func (m *CreateAuthTables) Down(ctx context.Context, db *sql.DB) error {
-	sqlScript, err := scripts.Scripts.ReadFile("20241024_2220_crate_auth_tables.down.sql")
+func (m *InitialMigration) Down(ctx context.Context, db *sql.DB) error {
+	sqlScript, err := scripts.Scripts.ReadFile("initial_migration.down.sql")
 	if err != nil {
 		return err
 	}

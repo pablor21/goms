@@ -14,4 +14,19 @@ database:
     driver: 'sqlite3'
     uri: ''
     migration_path: './app/data/database/migrations'
-    seed_path: './database/seeds' 
+    seed_path: './database/seeds'
+storage:
+  default: 
+    uri: ./storage/app/public
+  default_cache:
+      uri: ./storage/app/public/.cache
+  private:
+    uri: ./storage/app/private
+  private_cache:
+    uri: ./storage/app/private/.cache
+  public:
+    uri: ./storage/app/public
+  public_cache:
+    uri: ./storage/app/public/.cache
+  tmp:
+    uri: ./storage/app/tmp

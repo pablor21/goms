@@ -11,6 +11,7 @@ import (
 	server_config "github.com/pablor21/goms/app/server/config"
 	database_config "github.com/pablor21/goms/pkg/database/config"
 	"github.com/pablor21/goms/pkg/logger"
+	storage_config "github.com/pablor21/goms/pkg/storage/config"
 	"github.com/spf13/viper"
 )
 
@@ -29,6 +30,7 @@ type Config struct {
 	Logger   logger.LoggerConfig            `json:"logger" yaml:"logger" MAPSTRUCTURE:"logger"`
 	Server   server_config.ServerConfig     `json:"server" yaml:"server" MAPSTRUCTURE:"server"`
 	Database database_config.DatabaseConfig `json:"database" yaml:"database" MAPSTRUCTURE:"database"`
+	Storage  storage_config.StorageConfig   `json:"storage" yaml:"storage" MAPSTRUCTURE:"storage"`
 	Viper    *viper.Viper
 	Values   map[string]interface{}
 }

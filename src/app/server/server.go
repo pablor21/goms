@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/pablor21/goms/app/config"
 	"github.com/pablor21/goms/app/server/apps/api"
+	"github.com/pablor21/goms/app/server/apps/frontend"
 	"github.com/pablor21/goms/pkg/logger"
 	"github.com/ziflex/lecho/v3"
 )
@@ -40,6 +41,6 @@ func (s *Server) Start() error {
 		AllowCredentials: true,
 	}))
 	api.MapApiRoutes(e.Group("/api"))
-
+	frontend.MapFrontendRoutes(e.Group(""))
 	return e.Start(fmt.Sprintf("%s:%d", s.Config.Server.Host, s.Config.Server.Port))
 }
