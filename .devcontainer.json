@@ -1,0 +1,25 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/dotnet
+{
+  "name": "GOMS - App",
+  // The order of the files is important since later files override previous ones
+  "dockerComposeFile": [".docker/docker-compose.dev.yml"],
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "none",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "redhat.vscode-xml",
+        "github.copilot",  
+        "golang.go",
+        "jinliming2.vscode-go-template",
+        "a-h.templ",
+        "craigrbroughton.htmx-attributes",
+        "humao.rest-client",
+        "yy0931.vscode-sqlite3-editor",
+        "vue.volar"
+      ]
+    }
+  }
+}

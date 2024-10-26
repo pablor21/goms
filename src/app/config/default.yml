@@ -1,0 +1,17 @@
+app:
+  name: 'GoMS'
+  version: '1.0.0'
+  description: 'Go CMS is a simple CMS built with Go'
+  environment: 'production'
+server:
+  host: '0.0.0.0'
+  port: 8000
+logger:
+  level: 1
+database:
+   default:
+    type: 'gorm' 
+    driver: 'sqlite3'
+    uri: ''
+    migration_path: './app/data/database/migrations'
+    seed_path: './database/seeds' 

@@ -1,0 +1,14 @@
+dist
+.private
+node_modules
+vendor
+.DS_Store
+/src/config.*
+.env
+.vscode
+tmp
+./storage
+./bin
+./dist
+/bin
+/storage

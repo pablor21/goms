@@ -1,0 +1,33 @@
+FROM golang:1.23-alpine
+
+ENV TEMPL_EXPERIMENT=rawgo
+
+RUN apk upgrade --no-cache && \
+     apk add --no-cache \
+     htop \
+     curl \
+     git \
+     nodejs \
+     npm \
+     build-base \
+     vips-dev \
+     ffmpeg \
+     && \
+     rm -rf /var/cache/apk/*
+
+RUN apk add dart-sass --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/
+RUN apk add --no-cache dart-sass
+
+# Install Air
+RUN go install github.com/air-verse/air@latest
+
+# Install go tools
+RUN go install github.com/go-delve/delve/cmd/dlv@latest
+RUN go install golang.org/x/tools/gopls@latest 
+RUN go install github.com/a-h/templ/cmd/templ@latest
+RUN go install github.com/swaggo/swag/v2/cmd/swag@latest
+# RUN go install github.com/swaggo/swag/cmd/swag@latest
+# RUN go install github.com/parvez3019/go-swagger3@latest
+# RUN go install github.com/swaggo/swag/v2/cmd/swag@latest
+
+CMD [ "/bin/sh", "-c", "while sleep 1000; do :; done"]
