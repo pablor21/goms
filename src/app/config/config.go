@@ -11,6 +11,8 @@ import (
 	server_config "github.com/pablor21/goms/app/server/config"
 	database_config "github.com/pablor21/goms/pkg/database/config"
 	"github.com/pablor21/goms/pkg/logger"
+	mailer_config "github.com/pablor21/goms/pkg/mailer/config"
+	security_config "github.com/pablor21/goms/pkg/security/config"
 	storage_config "github.com/pablor21/goms/pkg/storage/config"
 	"github.com/spf13/viper"
 )
@@ -31,9 +33,20 @@ type Config struct {
 	Server   server_config.ServerConfig     `json:"server" yaml:"server" MAPSTRUCTURE:"server"`
 	Database database_config.DatabaseConfig `json:"database" yaml:"database" MAPSTRUCTURE:"database"`
 	Storage  storage_config.StorageConfig   `json:"storage" yaml:"storage" MAPSTRUCTURE:"storage"`
+	Assets   AssetConfig                    `json:"assets" yaml:"assets" MAPSTRUCTURE:"assets"`
+	OTP      OTPConfig                      `json:"otp" yaml:"otp" MAPSTRUCTURE:"otp"`
+	Mailer   mailer_config.MailerConfig     `json:"mailer" yaml:"mailer" MAPSTRUCTURE:"mailer"`
+	Security security_config.SecurityConfig `json:"security" yaml:"security" MAPSTRUCTURE:"security"`
 	Viper    *viper.Viper
 	Values   map[string]interface{}
 }
+
+// type AssetConfig struct {
+// 	BasePath string `json:"base_path" yaml:"base_path" MAPSTRUCTURE:"base_path" default:"/assets"`
+// 	Image    struct {
+// 		DefaultQuality int `mapstructure:"DEFAULT_QUALITY" default:"80"`
+// 	} `mapstructure:"IMAGE"`
+// }
 
 var config *Config
 

@@ -8,6 +8,9 @@
   "workspaceFolder": "/workspace",
   "shutdownAction": "none",
   "customizations": {
+    "jetbrains" : {
+      "backend" : "Rider"
+    },
     "vscode": {
       "extensions": [
         "redhat.vscode-xml",

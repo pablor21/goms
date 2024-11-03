@@ -53,8 +53,7 @@ func NewGormConnection(config config.DatabaseConnectionConfig) DbConnection {
 
 	var gormDb *gorm.DB
 	switch config.Driver {
-	case "sqlite":
-	case "sqlite3":
+	case "sqlite", "sqlite3":
 		gormDb, err = gorm.Open(sqlite.New(sqlite.Config{
 			Conn: conn,
 		}), gormConfig)
@@ -82,6 +81,14 @@ func NewGormConnection(config config.DatabaseConnectionConfig) DbConnection {
 	}
 }
 
+func (g *GormConnection) Close() error {
+	sqlDb, err := g._conn.DB()
+	if err != nil {
+		return err
+	}
+	return sqlDb.Close()
+}
+
 func (g *GormConnection) Conn() *gorm.DB {
 	return g._conn
 }
@@ -103,7 +110,17 @@ func (g *GormConnection) GetContextTx(ctx context.Context) (*gormTx, context.Con
 			isMain: true,
 		}
 
+	} else {
+		tx = &gormTx{
+			DB:     tx.DB,
+			isMain: false,
+		}
 	}
+	// tx = &gormTx{
+	// 	DB:     g._conn.Begin(),
+	// 	isMain: true,
+	// }
+
 	ctx = context.WithValue(ctx, txKey, tx)
 	return tx, ctx, nil
 }

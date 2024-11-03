@@ -19,6 +19,7 @@ type DbTx interface {
 type DbConnection interface {
 	// Conn() T
 	Migrator() migrator.Migrator
+	Close() error
 	// GetContextTx(context.Context) (DbTx, context.Context, error)
 }
 
@@ -58,6 +59,17 @@ func GetConnection(name string) DbConnection {
 	}
 
 	return conn
+}
+
+func Close() {
+	if db == nil {
+		panic("Database manager not initialized")
+	}
+	for _, conn := range db.connections {
+		if err := conn.Close(); err != nil {
+			panic(err)
+		}
+	}
 }
 
 // func (m *DbManager) AddConnection(name string, conn DbConnection[any]) {

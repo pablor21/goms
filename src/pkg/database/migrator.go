@@ -88,8 +88,7 @@ func (m *DefaultMigrator) getRegisteredMigrations() []migrator.Migration {
 func (m *DefaultMigrator) EnsureMigrationsTable(ctx context.Context) error {
 	var migrationsTableCreateSQL string
 	switch m.config.Driver {
-	case "sqlite":
-	case "sqlite3":
+	case "sqlite", "sqlite3":
 		migrationsTableCreateSQL = migrationsTableCreateSqlite
 	case "postgres":
 		migrationsTableCreateSQL = migrationsTableCreatePostgres

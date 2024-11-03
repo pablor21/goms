@@ -237,7 +237,7 @@ func (i *vipsImage) Export(params ImageExportParams) ([]byte, ImageMetadata, err
 	nativeFormat := i.image.Format()
 	if params.Format != "" {
 		switch params.Format {
-		case "jpeg":
+		case "jpeg", "jpg":
 			nativeFormat = vips.ImageTypeJPEG
 		case "png":
 			nativeFormat = vips.ImageTypePNG
@@ -253,6 +253,10 @@ func (i *vipsImage) Export(params ImageExportParams) ([]byte, ImageMetadata, err
 			nativeFormat = vips.ImageTypeHEIF
 		case "pdf":
 			nativeFormat = vips.ImageTypePDF
+		case "avif":
+			nativeFormat = vips.ImageTypeAVIF
+		default:
+			return nil, ImageMetadata{}, errors.New("invalid format")
 
 		}
 	}

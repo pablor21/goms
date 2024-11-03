@@ -6,6 +6,38 @@ app:
 server:
   host: '0.0.0.0'
   port: 8000
+  auth:
+    default:
+      secret: ''
+      lifetime: 86400
+      store:
+        type: 'filesystem'
+        config:
+          storage_name: 'internal'
+          path: 'sessions'
+          cleanup_interval: 30
+      cookie:
+          path: '/'
+          name: '_goms_session'
+          domain: ''
+          partitioned: false
+          http_only: true
+          secure: false
+          same_site: 'Lax'
+          max_age: 86400
+  apps:
+    frontend:
+      key: ''
+      base_path: '/'
+      domain: ''
+    admin:
+      key: 'admin'
+      pase_path: '/admin'
+      domain: ''
+    api:
+      key: 'api'
+      base_path: '/api'
+      domain: ''
 logger:
   level: 1
 database:
@@ -15,7 +47,36 @@ database:
     uri: ''
     migration_path: './app/data/database/migrations'
     seed_path: './database/seeds'
+assets:
+  base_path: '/assets'
+  image:
+    default:
+      default_quality: 80
+      valid_qualities:
+        - 100
+        - 80
+        - 60
+        - 40
+        - 20
+        - 10
+        - 1
+      valid_mimes:
+        - "image/jpeg"
+        - "image/png"
+        - "image/gif"
+        - "image/webp"
+    sections:
+      users:
+        valid_mimes:
+          - "image/jpeg"
+          - "image/png"
+          - "image/gif"
+        valid_thumbnails:
+          - "50x0"
+
 storage:
+  internal:
+    uri: ./storage/internal
   default: 
     uri: ./storage/app/public
   default_cache:
@@ -30,3 +91,22 @@ storage:
     uri: ./storage/app/public/.cache
   tmp:
     uri: ./storage/app/tmp
+
+security:
+  encryption:
+    key: 'your_secret'
+  otp:
+    length: 6
+    lifetime: 1800
+    max_attempts: 3
+    resend_delay: 60
+    
+mailer:
+  default:
+    driver: 'smtp'
+    host: 'mailpit'
+    port: 1025
+    username: 'app'
+    password: 'secret'
+    from: 'goms.com<no-reply@goms.com>'
+    auth_type: 'PLAIN'

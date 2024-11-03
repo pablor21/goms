@@ -28,6 +28,7 @@ const (
 	StorageNamePrivate      StorageName = "private"
 	StorageNamePrivateCache StorageName = "private_cache"
 	StorageNameTmp          StorageName = "tmp"
+	StorageNameInternal     StorageName = "internal"
 )
 
 func (s StorageName) String() string {
@@ -50,6 +51,8 @@ func ToStorageName(name string) StorageName {
 		return StorageNamePrivateCache
 	case "tmp":
 		return StorageNameTmp
+	case "internal":
+		return StorageNameInternal
 	default:
 		return StorageNameDefault
 	}

@@ -11,6 +11,7 @@
         },
         "version": "1.0.0"
     },
+    "basePath": "/api",
     "paths": {
         "/auth/login": {
             "post": {
@@ -25,9 +26,10 @@
                     "Auth"
                 ],
                 "summary": "Login",
+                "operationId": "Login",
                 "parameters": [
                     {
-                        "description": "dtos.UserLoginInput",
+                        "description": "Login data",
                         "name": "input",
                         "in": "body",
                         "required": true,
@@ -46,6 +48,187 @@
                 }
             }
         },
+        "/auth/logout": {
+            "post": {
+                "description": "Logout",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout",
+                "operationId": "Logout",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/me": {
+            "get": {
+                "description": "Me",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Me",
+                "operationId": "Me",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/UserResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/otp-login": {
+            "post": {
+                "description": "LoginWithOTP",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "LoginWithOTP",
+                "operationId": "LoginWithOTP",
+                "parameters": [
+                    {
+                        "description": "Login with OTP data",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/LoginWithOTPInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/UserLoginResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/request-otp": {
+            "post": {
+                "description": "RequestOtp",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "RequestOtp",
+                "operationId": "RequestOtp",
+                "parameters": [
+                    {
+                        "description": "Request OTP data",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RequestOTPInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/RequestOTPResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/update-profile": {
+            "put": {
+                "description": "UpdateProfile",
+                "consumes": [
+                    "application/json",
+                    " multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "UpdateProfile",
+                "operationId": "UpdateProfile",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "avatar",
+                        "name": "avatar",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "firstName",
+                        "name": "firstName",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "lastName",
+                        "name": "lastName",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "phoneNumber",
+                        "name": "phoneNumber",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "lang",
+                        "name": "lang",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/UserResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/ping": {
             "get": {
                 "description": "Health check",
@@ -58,11 +241,184 @@
                 "tags": [
                     "health"
                 ],
+                "operationId": "HealthCheck",
                 "responses": {
                     "200": {
-                        "description": "pong",
+                        "description": "ok",
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/tags": {
+            "post": {
+                "description": "CreateTag",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "CreateTag",
+                "operationId": "CreateTag",
+                "parameters": [
+                    {
+                        "description": "Tag data",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TagCreateInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/TagDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/tags/by-owner/{ownerType}": {
+            "get": {
+                "description": "ListTags",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "ListTags",
+                "operationId": "ListTags",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Owner Type",
+                        "name": "ownerType",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/TagListResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/tags/{id}": {
+            "get": {
+                "description": "GetTag",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "GetTag",
+                "operationId": "GetTag",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Tag ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/TagDTO"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "UpdateTag",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "UpdateTag",
+                "operationId": "UpdateTag",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Tag ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Tag data",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TagUpdateInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/TagDTO"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "DeleteTag",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "DeleteTag",
+                "operationId": "DeleteTag",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Tag ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
                         }
                     }
                 }
@@ -70,16 +426,311 @@
         }
     },
     "definitions": {
+        "Asset": {
+            "type": "object",
+            "properties": {
+                "assetType": {
+                    "$ref": "#/definitions/AssetType"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "downloadUrl": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "metadata": {
+                    "$ref": "#/definitions/Metadata"
+                },
+                "mimeType": {
+                    "type": "string"
+                },
+                "permalink": {
+                    "type": "string"
+                },
+                "section": {
+                    "type": "string"
+                },
+                "storageName": {
+                    "$ref": "#/definitions/storage.StorageName"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "uniqueId": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "uri": {
+                    "type": "string"
+                }
+            }
+        },
+        "AssetType": {
+            "type": "string",
+            "enum": [
+                "IMAGE",
+                "VIDEO",
+                "YOUTUBE_VIDEO",
+                "AUDIO",
+                "FILE"
+            ],
+            "x-enum-comments": {
+                "AssetTypeAudio": "@Name Audio",
+                "AssetTypeFile": "@Name File",
+                "AssetTypeImage": "@Name Image",
+                "AssetTypeVideo": "@Name Video",
+                "AssetTypeYoutube": "@Name YoutubeVideo"
+            },
+            "x-enum-varnames": [
+                "AssetTypeImage",
+                "AssetTypeVideo",
+                "AssetTypeYoutube",
+                "AssetTypeAudio",
+                "AssetTypeFile"
+            ]
+        },
+        "ClientType": {
+            "type": "string",
+            "enum": [
+                "frontend",
+                "admin"
+            ],
+            "x-enum-varnames": [
+                "ClientTypeFrontend",
+                "ClientTypeAdmin"
+            ]
+        },
+        "LoginWithOTPInput": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "Metadata": {
+            "type": "object",
+            "additionalProperties": true
+        },
+        "PaginatedResponseData[T]-TagDTO": {
+            "type": "object",
+            "properties": {
+                "first": {
+                    "type": "integer"
+                },
+                "hasMore": {
+                    "type": "boolean"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TagDTO"
+                    }
+                },
+                "last": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "RequestOTPInput": {
+            "type": "object",
+            "properties": {
+                "client": {
+                    "$ref": "#/definitions/ClientType"
+                },
+                "params": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "RequestOTPResponse": {
+            "type": "object",
+            "properties": {
+                "error": {},
+                "message": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "result": {
+                    "$ref": "#/definitions/RequestOTPResponseData"
+                },
+                "statusCode": {
+                    "type": "integer",
+                    "default": 200
+                },
+                "statusMessage": {
+                    "type": "string",
+                    "default": "Ok"
+                }
+            }
+        },
+        "RequestOTPResponseData": {
+            "type": "object",
+            "properties": {
+                "resendAfter": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "Response": {
+            "type": "object",
+            "properties": {
+                "error": {},
+                "message": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "statusCode": {
+                    "type": "integer",
+                    "default": 200
+                },
+                "statusMessage": {
+                    "type": "string",
+                    "default": "Ok"
+                }
+            }
+        },
+        "TagCreateInput": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "ownerType": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                }
+            }
+        },
+        "TagDTO": {
+            "type": "object",
+            "properties": {
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Tag"
+                    }
+                },
+                "complete_slug": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "metadata": {
+                    "description": "Metadata *datatypes.JSON `json:\"metadata\" gorm:\"metadata\"`",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/Metadata"
+                        }
+                    ]
+                },
+                "name": {
+                    "type": "string"
+                },
+                "owner_type": {
+                    "type": "string"
+                },
+                "parent": {
+                    "$ref": "#/definitions/models.Tag"
+                },
+                "parent_id": {
+                    "type": "integer"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "TagListResponse": {
+            "type": "object",
+            "properties": {
+                "error": {},
+                "message": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "result": {
+                    "$ref": "#/definitions/PaginatedResponseData[T]-TagDTO"
+                },
+                "statusCode": {
+                    "type": "integer",
+                    "default": 200
+                },
+                "statusMessage": {
+                    "type": "string",
+                    "default": "Ok"
+                }
+            }
+        },
+        "TagUpdateInput": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "ownerType": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                }
+            }
+        },
         "User": {
             "type": "object",
             "properties": {
-                "created_at": {
+                "avatar": {
+                    "$ref": "#/definitions/Asset"
+                },
+                "createdAt": {
                     "type": "string"
                 },
                 "email": {
                     "type": "string"
                 },
-                "first_name": {
+                "firstName": {
                     "type": "string"
                 },
                 "id": {
@@ -88,10 +739,10 @@
                 "lang": {
                     "type": "string"
                 },
-                "last_name": {
+                "lastName": {
                     "type": "string"
                 },
-                "phone_number": {
+                "phoneNumber": {
                     "type": "string"
                 },
                 "role": {
@@ -100,7 +751,7 @@
                 "status": {
                     "$ref": "#/definitions/UserStatus"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -108,14 +759,14 @@
         "UserLoginInput": {
             "type": "object",
             "properties": {
-                "data": {
+                "params": {
                     "type": "object",
                     "additionalProperties": true
                 },
-                "field_name": {
+                "password": {
                     "type": "string"
                 },
-                "field_value": {
+                "username": {
                     "type": "string"
                 }
             }
@@ -127,14 +778,42 @@
                 "message": {
                     "type": "string"
                 },
+                "metadata": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
                 "result": {
                     "$ref": "#/definitions/UserResponseLoginData"
                 },
-                "status_code": {
+                "statusCode": {
                     "type": "integer",
                     "default": 200
                 },
-                "status_message": {
+                "statusMessage": {
+                    "type": "string",
+                    "default": "Ok"
+                }
+            }
+        },
+        "UserResponse": {
+            "type": "object",
+            "properties": {
+                "error": {},
+                "message": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "result": {
+                    "$ref": "#/definitions/User"
+                },
+                "statusCode": {
+                    "type": "integer",
+                    "default": 200
+                },
+                "statusMessage": {
                     "type": "string",
                     "default": "Ok"
                 }
@@ -154,6 +833,10 @@
                 "ADMIN",
                 "USER"
             ],
+            "x-enum-comments": {
+                "RoleAdmin": "@name Admin",
+                "RoleUser": "@name User"
+            },
             "x-enum-varnames": [
                 "RoleAdmin",
                 "RoleUser"
@@ -165,9 +848,82 @@
                 "ACTIVE",
                 "INACTIVE"
             ],
+            "x-enum-comments": {
+                "UserStatusActive": "@name Active",
+                "UserStatusInactive": "@name Inactive"
+            },
             "x-enum-varnames": [
-                "StatusActive",
-                "StatusInactive"
+                "UserStatusActive",
+                "UserStatusInactive"
+            ]
+        },
+        "models.Tag": {
+            "type": "object",
+            "properties": {
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Tag"
+                    }
+                },
+                "complete_slug": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "metadata": {
+                    "description": "Metadata *datatypes.JSON `json:\"metadata\" gorm:\"metadata\"`",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/Metadata"
+                        }
+                    ]
+                },
+                "name": {
+                    "type": "string"
+                },
+                "owner_type": {
+                    "type": "string"
+                },
+                "parent": {
+                    "$ref": "#/definitions/models.Tag"
+                },
+                "parent_id": {
+                    "type": "integer"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "storage.StorageName": {
+            "type": "string",
+            "enum": [
+                "default",
+                "default_cache",
+                "public",
+                "public_cache",
+                "private",
+                "private_cache",
+                "tmp",
+                "internal"
+            ],
+            "x-enum-varnames": [
+                "StorageNameDefault",
+                "StorageNameDefaultCache",
+                "StorageNamePublic",
+                "StorageNamePublicCache",
+                "StorageNamePrivate",
+                "StorageNamePrivateCache",
+                "StorageNameTmp",
+                "StorageNameInternal"
             ]
         }
     },

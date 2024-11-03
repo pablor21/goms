@@ -6,6 +6,7 @@ import (
 
 	"github.com/pablor21/goms/app/cmd"
 	"github.com/pablor21/goms/app/config"
+	_ "github.com/pablor21/goms/app/serializer"
 	"github.com/pablor21/goms/pkg/database"
 	"github.com/pablor21/goms/pkg/logger"
 	"github.com/pablor21/goms/pkg/storage"
@@ -25,6 +26,7 @@ func main() {
 
 	// Initialize database
 	database.NewDbManager(config.GetConfig().Database)
+	defer database.Close()
 	// Initialize storage
 	storage.InitStorage(config.GetConfig().Storage)
 

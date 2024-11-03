@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/pablor21/goms/app/config"
+	"github.com/pablor21/goms/app/generators"
 	"github.com/pablor21/goms/app/server"
 	"github.com/pablor21/goms/pkg/database"
 	"github.com/spf13/cobra"
@@ -21,6 +22,6 @@ func Run() error {
 
 	database.AddDatabaseCmd(rootCmd)
 	server.AddServerCmd(rootCmd)
-
+	generators.AddGeneratorCmd(rootCmd)
 	return rootCmd.Execute()
 }

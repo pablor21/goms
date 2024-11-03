@@ -2,12 +2,11 @@ package storage
 
 import (
 	"path/filepath"
-	"strings"
 
-	"github.com/google/uuid"
+	"github.com/pablor21/goms/pkg/uuid"
 )
 
 func UniqueFileName(name string) string {
 	ext := filepath.Ext(name)
-	return strings.ReplaceAll(uuid.New().String(), "-", "") + ext
+	return uuid.GenerateUUIDWithoutHyphens() + ext
 }

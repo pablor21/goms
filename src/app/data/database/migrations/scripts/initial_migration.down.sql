@@ -1,1 +1,7 @@
 DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `otps`;
+DROP TABLE IF EXISTS `assets`;
+DROP TABLE IF EXISTS `asset_libraries`;
+DROP TABLE IF EXISTS `asset_folders`;
+DROP TABLE IF EXISTS `tags`;
+DROP TABLE IF EXISTS `tag_entries`;
