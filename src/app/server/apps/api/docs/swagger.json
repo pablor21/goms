@@ -629,6 +629,9 @@
                 "ownerType": {
                     "type": "string"
                 },
+                "parentId": {
+                    "type": "integer"
+                },
                 "slug": {
                     "type": "string"
                 }
@@ -643,10 +646,10 @@
                         "$ref": "#/definitions/models.Tag"
                     }
                 },
-                "complete_slug": {
+                "completeSlug": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "id": {
@@ -663,19 +666,19 @@
                 "name": {
                     "type": "string"
                 },
-                "owner_type": {
+                "ownerType": {
                     "type": "string"
                 },
                 "parent": {
                     "$ref": "#/definitions/models.Tag"
                 },
-                "parent_id": {
+                "parentId": {
                     "type": "integer"
                 },
                 "slug": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -712,6 +715,9 @@
                 },
                 "ownerType": {
                     "type": "string"
+                },
+                "parentId": {
+                    "type": "integer"
                 },
                 "slug": {
                     "type": "string"
@@ -866,10 +872,10 @@
                         "$ref": "#/definitions/models.Tag"
                     }
                 },
-                "complete_slug": {
+                "completeSlug": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "id": {
@@ -886,19 +892,19 @@
                 "name": {
                     "type": "string"
                 },
-                "owner_type": {
+                "ownerType": {
                     "type": "string"
                 },
                 "parent": {
                     "$ref": "#/definitions/models.Tag"
                 },
-                "parent_id": {
+                "parentId": {
                     "type": "integer"
                 },
                 "slug": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }

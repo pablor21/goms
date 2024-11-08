@@ -12,8 +12,8 @@ type BaseModel[IDType any] struct {
 
 type BaseTimestampedModel[IDType any] struct {
 	BaseModel[IDType]
-	CreatedAt time.Time  `json:"created_at,omitempty" gorm:"column:created_at"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty" gorm:"column:updated_at"`
+	CreatedAt time.Time  `json:"createdAt,omitempty" gorm:"column:created_at"`
+	UpdatedAt *time.Time `json:"updatedAt,omitempty" gorm:"column:updated_at"`
 }
 
 type SoftDeleteModel[IDType any] struct {
@@ -23,7 +23,7 @@ type SoftDeleteModel[IDType any] struct {
 
 type MetadataModel struct {
 	// Metadata *datatypes.JSON `json:"metadata" gorm:"metadata"`
-	Metadata *datatypes.Metadata `json:"metadata" gorm:"column:metadata"`
+	Metadata *datatypes.Metadata `json:"metadata,omitempty" gorm:"column:metadata"`
 }
 
 func (m *MetadataModel) MergeMetadata(metadata map[string]interface{}) {
@@ -36,5 +36,5 @@ func (m *MetadataModel) MergeMetadata(metadata map[string]interface{}) {
 }
 
 type DisplayOrderModel struct {
-	DisplayOrder int `json:"displayOrder" gorm:"column:d_order,default:0,index"`
+	DisplayOrder int `json:"displayOrder,omitempty" gorm:"column:d_order,default:0,index"`
 }

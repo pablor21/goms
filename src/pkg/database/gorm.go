@@ -101,6 +101,20 @@ func (g *GormConnection) Paginate(query *gorm.DB, take, skip int) *gorm.DB {
 	return query.Limit(take).Offset(skip)
 }
 
+// Get dbConn from context
+// If there is a transaction in the context, returns the transaction
+func (g *GormConnection) GetContextDb(ctx context.Context) (*gorm.DB, context.Context, error) {
+	var txKey txKeyType = txKeyType("db_tx_" + g._config.Name)
+	db, ok := ctx.Value(txKey).(*gormTx)
+	if ok {
+		return db.DB, ctx, nil
+	} else {
+		return g._conn, ctx, nil
+	}
+}
+
+// Get a transaction from the context or create a new one
+// Do not forget to commit or rollback the transaction and use the same context
 func (g *GormConnection) GetContextTx(ctx context.Context) (*gormTx, context.Context, error) {
 	var txKey txKeyType = txKeyType("db_tx_" + g._config.Name)
 	tx, ok := ctx.Value(txKey).(*gormTx)

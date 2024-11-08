@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `id` INTEGER PRIMARY KEY AUTOINCREMENT,
   `name` VARCHAR(255) NOT NULL COLLATE NOCASE,
   `slug` VARCHAR(255) NOT NULL COLLATE NOCASE,
-  `complete_slug` VARCHAR(255) NOT NULL COLLATE NOCASE,
+  `complete_slug` VARCHAR(255) COLLATE NOCASE,
   `owner_type` VARCHAR(32) COLLATE NOCASE,
   `parent_id` INTEGER REFERENCES `tags`(`id`) ON DELETE SET NULL,
   `metadata` JSON,
@@ -112,6 +112,34 @@ CREATE TABLE IF NOT EXISTS `tags` (
 
 CREATE UNIQUE INDEX IF NOT EXISTS `tags_owner_type_complete_slug` ON `tags`(`complete_slug`, `owner_type`);
 CREATE INDEX IF NOT EXISTS `tags_owner` ON `tags`(`owner_type`);
+
+CREATE TRIGGER IF NOT EXISTS `tags_create_with_parent_complete_slug` 
+AFTER INSERT ON `tags`
+FOR EACH ROW
+WHEN NEW.parent_id IS NOT NULL
+BEGIN
+ UPDATE tags SET complete_slug = (SELECT complete_slug || '/' || NEW.slug FROM tags WHERE id = NEW.parent_id) WHERE id = NEW.id;
+END;
+
+CREATE TRIGGER IF NOT EXISTS `tags_create_without_parent_complete_slug`
+AFTER INSERT ON `tags`
+FOR EACH ROW
+WHEN NEW.parent_id IS NULL
+BEGIN
+ UPDATE tags SET complete_slug = NEW.slug WHERE id = NEW.id;
+END;
+
+
+-- CREATE TRIGGER IF NOT EXISTS `tags_update_complete_slug`
+-- BEFORE UPDATE ON `tags`
+-- BEGIN
+--   SELECT CASE
+--   WHEN NEW.parent_id IS NULL THEN
+--     UPDATE tags SET complete_slug = NEW.slug WHERE id = NEW.id;
+--   ELSE
+--     UPDATE tags SET complete_slug = (SELECT slug || '/' || NEW.slug FROM tags WHERE id = NEW.parent_id) WHERE id = NEW.id;
+--   END;
+-- END;
 
 
 CREATE TABLE IF NOT EXISTS `tag_entries` (

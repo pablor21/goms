@@ -82,22 +82,23 @@ export interface Response {
 export interface TagCreateInput {
   name?: string;
   ownerType?: string;
+  parentId?: number;
   slug?: string;
 }
 
 export interface TagDTO {
   children?: ModelsTag[];
-  complete_slug?: string;
-  created_at?: string;
+  completeSlug?: string;
+  createdAt?: string;
   id?: number;
   /** Metadata *datatypes.JSON `json:"metadata" gorm:"metadata"` */
   metadata?: Metadata;
   name?: string;
-  owner_type?: string;
+  ownerType?: string;
   parent?: ModelsTag;
-  parent_id?: number;
+  parentId?: number;
   slug?: string;
-  updated_at?: string;
+  updatedAt?: string;
 }
 
 export interface TagListResponse {
@@ -114,6 +115,7 @@ export interface TagListResponse {
 export interface TagUpdateInput {
   name?: string;
   ownerType?: string;
+  parentId?: number;
   slug?: string;
 }
 
@@ -175,17 +177,17 @@ export enum UserStatus {
 
 export interface ModelsTag {
   children?: ModelsTag[];
-  complete_slug?: string;
-  created_at?: string;
+  completeSlug?: string;
+  createdAt?: string;
   id?: number;
   /** Metadata *datatypes.JSON `json:"metadata" gorm:"metadata"` */
   metadata?: Metadata;
   name?: string;
-  owner_type?: string;
+  ownerType?: string;
   parent?: ModelsTag;
-  parent_id?: number;
+  parentId?: number;
   slug?: string;
-  updated_at?: string;
+  updatedAt?: string;
 }
 
 export enum StorageStorageName {

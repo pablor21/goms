@@ -15,6 +15,7 @@ type TagCreateInput struct {
 	Name      string `json:"name" form:"name"`
 	Slug      string `json:"slug" form:"slug"`
 	OwnerType string `json:"ownerType" form:"ownerType"`
+	ParentID  *int64 `json:"parentId" form:"parentId"`
 } // @Name TagCreateInput
 
 type TagUpdateInput struct {

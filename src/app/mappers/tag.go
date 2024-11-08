@@ -33,11 +33,17 @@ func (m *TagMapper) MapTagListToDTO(ctx context.Context, input []*models.Tag) []
 }
 
 func (m *TagMapper) MapTagCreateInputToModel(ctx context.Context, input dtos.TagCreateInput) *models.Tag {
-	return &models.Tag{
+	t := &models.Tag{
 		Name:      input.Name,
 		OwnerType: input.OwnerType,
 		Slug:      input.Slug,
 	}
+
+	if input.ParentID != nil && *input.ParentID > 0 {
+		t.ParentID = input.ParentID
+	}
+
+	return t
 }
 
 func (m *TagMapper) MapTagUpdateInputToModel(ctx context.Context, input dtos.TagUpdateInput) *models.Tag {

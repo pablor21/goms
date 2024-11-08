@@ -6,11 +6,10 @@ import (
 	"github.com/pablor21/goms/app/dtos"
 	"github.com/pablor21/goms/app/mappers"
 	"github.com/pablor21/goms/app/models"
-	"github.com/pablor21/goms/app/repositories"
+	"github.com/pablor21/goms/app/services"
 	"github.com/pablor21/goms/app/usecases/base"
 	"github.com/pablor21/goms/pkg/database"
 	"github.com/pablor21/goms/pkg/interactions/response"
-	"gorm.io/gorm"
 )
 
 type TagUseCases interface {
@@ -23,7 +22,7 @@ var _tagUseCases TagUseCases
 func GetTagUseCases() TagUseCases {
 	if _tagUseCases == nil {
 		_tagUseCases = &tagUseCasesImpl{
-			db: database.GetConnection("default").(*database.GormConnection).Conn(),
+			db: database.GetConnection("default").(*database.GormConnection),
 		}
 	}
 	return _tagUseCases
@@ -31,89 +30,57 @@ func GetTagUseCases() TagUseCases {
 
 // TagUseCasesImpl ...
 type tagUseCasesImpl struct {
-	db *gorm.DB
+	db *database.GormConnection
 }
 
 func (u *tagUseCasesImpl) Create(ctx context.Context, input dtos.TagCreateInput) (res response.TypedResponse[dtos.TagDTO], err error) {
-	r := repositories.Use(u.db)
-	t := r.Tag
 	m := mappers.GetTagMapper()
-	model := m.MapTagCreateInputToModel(ctx, input)
-	err = t.WithContext(ctx).Create(model)
-	if err != nil {
-		return
-	}
+	model, err := services.GetTagService().Create(ctx, input)
 	res = response.NewTypedResponse(m.MapTagToDTO(ctx, model))
 	return
 }
 
 func (u *tagUseCasesImpl) Update(ctx context.Context, id int64, input dtos.TagUpdateInput) (res response.TypedResponse[dtos.TagDTO], err error) {
-	r := repositories.Use(u.db)
-	t := r.Tag
 	m := mappers.GetTagMapper()
-	model := m.MapTagUpdateInputToModel(ctx, input)
-	_, err = t.WithContext(ctx).Where(t.ID.Eq(id)).Updates(model)
-	if err != nil {
-		return
-	}
+	model, err := services.GetTagService().Update(ctx, id, input)
 	res = response.NewTypedResponse(m.MapTagToDTO(ctx, model))
 	return
 }
 
 func (u *tagUseCasesImpl) DeleteById(ctx context.Context, id int64) (res response.Response, err error) {
-	r := repositories.Use(u.db)
-	t := r.Tag
-	_, err = t.WithContext(ctx).Where(t.ID.Eq(id)).Delete()
+	_, err = services.GetTagService().Delete(ctx, id)
 	if err != nil {
 		return
 	}
-	res = response.NewResponse()
+	res = response.NewResponse().SetCode(204)
 	return
 }
 
 func (u *tagUseCasesImpl) FindById(ctx context.Context, id int64) (res response.TypedResponse[dtos.TagDTO], err error) {
-	r := repositories.Use(u.db)
-	t := r.Tag
-	result, err := t.WithContext(ctx).Where(t.ID.Eq(id)).First()
-	if err != nil {
-		return
-	}
-	res = response.NewTypedResponse(dtos.TagDTO{
-		Tag: *result,
-	})
+	m := mappers.GetTagMapper()
+	model, err := services.GetTagService().GetByID(ctx, id)
+	res = response.NewTypedResponse(m.MapTagToDTO(ctx, model))
+	return
+}
+
+func (u *tagUseCasesImpl) FindByParentId(ctx context.Context, parentId int64) (res response.TypedResponse[dtos.TagDTO], err error) {
+	m := mappers.GetTagMapper()
+	model, err := services.GetTagService().GetByID(ctx, parentId)
+	res = response.NewTypedResponse(m.MapTagToDTO(ctx, model))
 	return
 }
 
 func (u *tagUseCasesImpl) FindAll(ctx context.Context) (res response.TypedResponse[[]dtos.TagDTO], err error) {
-	r := repositories.Use(u.db)
-	t := r.Tag
-	result, err := t.WithContext(ctx).Find()
-	if err != nil {
-		return
-	}
-	res = response.NewTypedResponse([]dtos.TagDTO{})
-	for _, v := range result {
-		res.Result = append(res.Result, dtos.TagDTO{
-			Tag: *v,
-		})
-	}
+	m := mappers.GetTagMapper()
+	models, err := services.GetTagService().FindAll(ctx, dtos.TagListInput{})
+	res = response.NewTypedResponse(m.MapTagListToDTO(ctx, models.Result.Items))
 	return
 }
 
 func (u *tagUseCasesImpl) FindByOwner(ctx context.Context, input dtos.TagListInput) (res dtos.TagListResponse, err error) {
-	r := repositories.Use(u.db)
-	t := r.Tag
-	result, err := t.WithContext(ctx).Where(t.OwnerType.Eq(input.OwnerType)).Find()
-	if err != nil {
-		return
-	}
-
-	res.Result.Items = make([]dtos.TagDTO, 0)
-	for _, v := range result {
-		res.Result.Items = append(res.Result.Items, dtos.TagDTO{
-			Tag: *v,
-		})
-	}
-
+	m := mappers.GetTagMapper()
+	models, err := services.GetTagService().FindByOwner(ctx, input)
+	res.Result.Items = m.MapTagListToDTO(ctx, models.Result.Items)
+	res.Result.Total = models.Result.Total
 	return
 }
